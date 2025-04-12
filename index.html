@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment System</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .language-selector {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #language-select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+            background-color: #34495e;
+            color: white;
+        }
+
+        #voice-assistant {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #voice-assistant:hover {
+            background-color: #2980b9;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .hero h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        /* Search Section */
+        .search {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .search-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        /* Results Section */
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .doctor-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .doctor-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .doctor-card p {
+            color: #7f8c8d;
+            margin: 5px 0;
+        }
+
+        .specialization {
+            font-weight: 600;
+            color: #3498db !important;
+        }
+
+        .languages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .language-tag {
+            background-color: #e0f7fa;
+            color: #00838f;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .availability {
+            margin-top: 15px;
+        }
+
+        .availability p {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .time-slot {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            background-color: #c8e6c9;
+        }
+
+        .book-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .book-btn:hover {
+            background-color: #219653;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .voice-controls button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #record-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        #stop-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Video Consultation */
+        .video-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .video-box {
+            flex: 1;
+            background-color: #2c3e50;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .video-box video {
+            width: 100%;
+            border-radius: 4px;
+            background-color: #000;
+        }
+
+        .video-box p {
+            color: white;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .consult-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .consult-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #start-call {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        #end-call {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        #mute-audio, #hide-video {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .emergency {
+            margin-top: 15px;
+        }
+
+        .emergency button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .video-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Doctor Appointment System</h1>
+            <div class="language-selector">
+                <select id="language-select" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="ta">Tamil</option>
+                    <option value="te">Telugu</option>
+                </select>
+                <button id="voice-assistant" onclick="startVoiceAssistant()">🎤 Voice Assistant</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Dynamic Content Section -->
+        <div id="page-content">
+            {% if page == 'home' or not page %}
+            <!-- Home Page Content -->
+            <div class="container">
+                <section class="hero">
+                    <h2 data-translate="welcome">Welcome to our Doctor Appointment System</h2>
+                    <p data-translate="hero_text">Book appointments with specialized doctors in your preferred language</p>
+                </section>
+
+                <section class="search">
+                    <div class="search-box">
+                        <h3 data-translate="find_doctor">Find a Doctor</h3>
+                        <form id="doctor-search">
+                            <div class="form-group">
+                                <label for="health-issue" data-translate="health_issue">Health Issue</label>
+                                <input type="text" id="health-issue" placeholder="e.g., Diabetes, Heart Disease">
+                            </div>
+                            <div class="form-group">
+                                <label for="language" data-translate="preferred_lang">Preferred Language</label>
+                                <select id="language">
+                                    <option value="English">English</option>
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Kannada">Kannada</option>
+                                    <option value="Tamil">Tamil</option>
+                                    <option value="Telugu">Telugu</option>
+                                </select>
+                            </div>
+                            <button type="submit" data-translate="search">Search</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="results" id="doctor-results">
+                    <!-- Doctors will be displayed here -->
+                </section>
+
+                <section class="appointment-form" id="appointment-form" style="display: none;">
+                    <h3 data-translate="book_appointment">Book Appointment</h3>
+                    <form id="book-appointment">
+                        <input type="hidden" id="doctor-id">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointment-date" data-translate="date">Date</label>
+                                <input type="date" id="appointment-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-time" data-translate="time">Time</label>
+                                <input type="time" id="appointment-time" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="health-issue-details" data-translate="health_issue_details">Health Issue Details</label>
+                            <textarea id="health-issue-details" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patient-name" data-translate="full_name">Full Name</label>
+                            <input type="text" id="patient-name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patient-age" data-translate="age">Age</label>
+                                <input type="number" id="patient-age" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-gender" data-translate="gender">Gender</label>
+                                <select id="patient-gender" required>
+                                    <option value="Male" data-translate="male">Male</option>
+                                    <option value="Female" data-translate="female">Female</option>
+                                    <option value="Other" data-translate="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patient-phone" data-translate="phone">Phone Number</label>
+                            <input type="tel" id="patient-phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patient-email" data-translate="email">Email (Optional)</label>
+                            <input type="email" id="patient-email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="video-consult">
+                                <span data-translate="video_consult">Video Consultation (for emergency cases)</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" data-translate="book_now">Book Now</button>
+                    </form>
+                </section>
+
+                <div id="voice-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeVoiceModal()">&times;</span>
+                        <h3 data-translate="voice_assistant">Voice Assistant</h3>
+                        <p data-translate="speak_now">Speak now...</p>
+                        <div class="voice-controls">
+                            <button id="record-btn" onclick="startRecording()" data-translate="start_recording">Start Recording</button>
+                            <button id="stop-btn" onclick="stopRecording()" disabled data-translate="stop_recording">Stop Recording</button>
+                        </div>
+                        <div id="voice-result"></div>
+                    </div>
+                </div>
+            </div>
+            {% elif page == 'video_consult' %}
+            <!-- Video Consultation Page -->
+            <div class="container">
+                <section class="video-consultation">
+                    <h2 data-translate="video_consultation">Video Consultation</h2>
+                    
+                    <div class="video-container">
+                        <div class="video-box">
+                            <video id="local-video" autoplay muted></video>
+                            <p data-translate="you">You</p>
+                        </div>
+                        <div class="video-box">
+                            <video id="remote-video" autoplay></video>
+                            <p data-translate="doctor">Doctor</p>
+                        </div>
+                    </div>
+
+                    <div class="consult-controls">
+                        <button id="start-call" data-translate="start_call">Start Call</button>
+                        <button id="end-call" disabled data-translate="end_call">End Call</button>
+                        <button id="mute-audio" data-translate="mute">Mute</button>
+                        <button id="hide-video" data-translate="hide_video">Hide Video</button>
+                    </div>
+
+                    <div class="prescription-form" id="prescription-form">
+                        <h3 data-translate="prescription">Prescription</h3>
+                        <form id="upload-prescription">
+                            <input type="hidden" id="appointment-id" value="{{ appointment.id }}">
+                            
+                            <div class="form-group">
+                                <label for="medicines" data-translate="medicines">Medicines</label>
+                                <textarea id="medicines" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="instructions" data-translate="instructions">Instructions</label>
+                                <textarea id="instructions"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prescription-file" data-translate="upload_prescription">Upload Prescription (Optional)</label>
+                                <input type="file" id="prescription-file" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+
+                            <button type="submit" data-translate="submit_prescription">Submit Prescription</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Doctor Appointment System. All rights reserved.</p>
+            <div class="emergency">
+                <button onclick="startEmergencyConsult()">🚨 Emergency Consultation</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language Handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial language from URL or session
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang') || 'en';
+            document.documentElement.lang = lang;
+            document.getElementById('language-select').value = lang;
+            
+            // Initialize Google Translate
+            googleTranslateElementInit();
+            
+            // Load doctors based on default language
+            loadDoctors();
+        });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,kn,ta,te',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+
+        function changeLanguage(lang) {
+            window.location.href = /?lang=${lang};
+        }
+
+        // Doctor Search and Appointment Booking
+        document.getElementById('doctor-search').addEventListener('submit', function(e) {
+            e.preventDefault();
+            loadDoctors();
+        });
+
+        function loadDoctors() {
+            const healthIssue = document.getElementById('health-issue').value;
+            const language = document.getElementById('language').value;
+            
+            fetch(/get_doctors?specialization=${encodeURIComponent(healthIssue)}&language=${encodeURIComponent(language)})
+                .then(response => response.json())
+                .then(data => displayDoctors(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayDoctors(doctors) {
+            const resultsContainer = document.getElementById('doctor-results');
+            resultsContainer.innerHTML = '';
+            
+            if (doctors.length === 0) {
+                resultsContainer.innerHTML = '<p>No doctors found matching your criteria.</p>';
+                return;
+            }
+            
+            doctors.forEach(doctor => {
+                const doctorCard = document.createElement('div');
+                doctorCard.className = 'doctor-card';
+                
+                const languagesHTML = doctor.languages.split(',').map(lang => 
+                    <span class="language-tag">${lang.trim()}</span>
+                ).join('');
+                
+                const availabilityHTML = doctor.availability.map(slot => 
+                    `<span class="time-slot" onclick="selectAppointmentSlot('${slot.day}', '${slot.start_time}', ${doctor.id})">
+                        ${slot.day}: ${slot.start_time} - ${slot.end_time}
+                    </span>`
+                ).join('');
+                
+                doctorCard.innerHTML = `
+                    <h3>${doctor.name}</h3>
+                    <p class="specialization">${doctor.specialization}</p>
+                    <div class="languages">${languagesHTML}</div>
+                    <div class="availability">
+                        <p>Available Slots:</p>
+                        ${availabilityHTML}
+                    </div>
+                    <button class="book-btn" onclick="showAppointmentForm(${doctor.id})">Book Appointment</button>
+                `;
+                
+                resultsContainer.appendChild(doctorCard);
+            });
+        }
+
+        function selectAppointmentSlot(day, time, doctorId) {
+            document.getElementById('appointment-date').value = getNextDateForDay(day);
+            document.getElementById('appointment-time').value = time.split('-')[0].trim();
+            document.getElementById('doctor-id').value = doctorId;
+            document.getElementById('appointment-form').style.display = 'block';
+            window.scrollTo({
+                top: document.getElementById('appointment-form').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+
+        function getNextDateForDay(dayName) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayIndex = days.indexOf(dayName);
+            const today = new Date();
+            const todayIndex = today.getDay();
+            
+            let daysToAdd = dayIndex - todayIndex;
+            if (daysToAdd <= 0) daysToAdd += 7;
+            
+            const nextDate = new Date(today);
+            nextDate.setDate(today.getDate() + daysToAdd);
+            
+            return nextDate.toISOString().split('T')[0];
+        }
+
+        function showAppointmentForm(doctorId) {
+            document.getElementById('doctor-id').value = doctorId;
+            document.getElementById('appointment-form').style.display = 'block';
+            window.scrollTo({
+                top: document.getElementById('appointment-form').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+
+        document.getElementById('book-appointment').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                doctor_id: document.getElementById('doctor-id').value,
+                date: document.getElementById('appointment-date').value,
+                time: document.getElementById('appointment-time').value,
+                health_issue: document.getElementById('health-issue-details').value,
+                name: document.getElementById('patient-name').value,
+                age: document.getElementById('patient-age').value,
+                gender: document.getElementById('patient-gender').value,
+                phone: document.getElementById('patient-phone').value,
+                email: document.getElementById('patient-email').value,
+                video_consult: document.getElementById('video-consult').checked,
+                emergency: document.getElementById('video-consult').checked
+            };
+            
+            fetch('/book_appointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Appointment booked successfully!');
+                    if (formData.video_consult) {
+                        window.location.href = /video_consult/${data.appointment_id};
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Voice Assistant
+        let mediaRecorder;
+        let audioChunks = [];
+        const voiceModal = document.getElementById('voice-modal');
+
+        function startVoiceAssistant() {
+            voiceModal.style.display = 'block';
+        }
+
+        function closeVoiceModal() {
+            voiceModal.style.display = 'none';
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+        }
+
+        function startRecording() {
+            const language = document.getElementById('language-select').value;
+            const recordBtn = document.getElementById('record-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        sendAudioToServer(audioBlob, language);
+                    };
+                    
+                    mediaRecorder.start();
+                    recordBtn.disabled = true;
+                    stopBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error accessing microphone:', error);
+                    alert('Could not access microphone. Please check permissions.');
+                });
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                document.getElementById('record-btn').disabled = false;
+                document.getElementById('stop-btn').disabled = true;
+                
+                // Stop all tracks in the stream
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function sendAudioToServer(audioBlob, language) {
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recording.wav');
+            formData.append('language', language);
+            
+            fetch('/voice_input', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const voiceResult = document.getElementById('voice-result');
+                if (data.success) {
+                    voiceResult.innerHTML = <p><strong>You said:</strong> ${data.text}</p>;
+                    processVoiceCommand(data.text);
+                } else {
+                    voiceResult.innerHTML = <p class="error">Error: ${data.error}</p>;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('voice-result').innerHTML = <p class="error">Error sending audio to server</p>;
+            });
+        }
+
+        function processVoiceCommand(text) {
+            // Simple voice command processing
+            const lowerText = text.toLowerCase();
+            
+            if (lowerText.includes('book appointment') || lowerText.includes('find doctor')) {
+                document.getElementById('health-issue').focus();
+            } else if (lowerText.includes('emergency')) {
+                startEmergencyConsult();
+            } else if (lowerText.includes('heart') || lowerText.includes('chest pain')) {
+                document.getElementById('health-issue').value = 'Heart';
+                loadDoctors();
+            } else if (lowerText.includes('diabetes') || lowerText.includes('sugar')) {
+                document.getElementById('health-issue').value = 'Diabetes';
+                loadDoctors();
+            } else if (lowerText.includes('cancel') || lowerText.includes('close')) {
+                closeVoiceModal();
+            }
+        }
+
+        // Emergency Consultation
+        function startEmergencyConsult() {
+            const healthIssue = prompt('Please describe your emergency health issue:');
+            if (healthIssue) {
+                document.getElementById('health-issue').value = healthIssue;
+                document.getElementById('video-consult').checked = true;
+                loadDoctors();
+            }
+        }
+
+        // Video Consultation (WebRTC)
+        let localStream;
+        let peerConnection;
+        const configuration = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('start-call')) {
+                setupVideoConsultation();
+            }
+        });
+
+        function setupVideoConsultation() {
+            const startCallBtn = document.getElementById('start-call');
+            const endCallBtn = document.getElementById('end-call');
+            const muteAudioBtn = document.getElementById('mute-audio');
+            const hideVideoBtn = document.getElementById('hide-video');
+            
+            startCallBtn.addEventListener('click', startCall);
+            endCallBtn.addEventListener('click', endCall);
+            muteAudioBtn.addEventListener('click', toggleAudio);
+            hideVideoBtn.addEventListener('click', toggleVideo);
+            
+            // Initialize local video
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    localStream = stream;
+                    document.getElementById('local-video').srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing media devices:', error);
+                    alert('Could not access camera/microphone. Please check permissions.');
+                });
+        }
+
+        function startCall() {
+            const startCallBtn = document.getElementById('start-call');
+            const endCallBtn = document.getElementById('end-call');
+            
+            startCallBtn.disabled = true;
+            endCallBtn.disabled = false;
+            
+            // In a real application, you would signal the doctor and set up the peer connection
+            // This is a simplified version for demonstration
+            
+            peerConnection = new RTCPeerConnection(configuration);
+            
+            // Add local stream to connection
+            localStream.getTracks().forEach(track => {
+                peerConnection.addTrack(track, localStream);
+            });
+            
+            // Set up remote stream
+            peerConnection.ontrack = event => {
+                document.getElementById('remote-video').srcObject = event.streams[0];
+            };
+            
+            // Simulate call establishment (in real app, you'd exchange ICE candidates)
+            setTimeout(() => {
+                document.getElementById('prescription-form').style.display = 'block';
+            }, 2000);
+        }
+
+        function endCall() {
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            
+            document.getElementById('remote-video').srcObject = null;
+            document.getElementById('start-call').disabled = false;
+            document.getElementById('end-call').disabled = true;
+        }
+
+        function toggleAudio() {
+            const audioTracks = localStream.getAudioTracks();
+            if (audioTracks.length > 0) {
+                const isMuted = !audioTracks[0].enabled;
+                audioTracks[0].enabled = isMuted;
+                document.getElementById('mute-audio').textContent = isMuted ? 'Mute' : 'Unmute';
+            }
+        }
+
+        function toggleVideo() {
+            const videoTracks = localStream.getVideoTracks();
+            if (videoTracks.length > 0) {
+                const isHidden = !videoTracks[0].enabled;
+                videoTracks[0].enabled = isHidden;
+                document.getElementById('hide-video').textContent = isHidden ? 'Hide Video' : 'Show Video';
+            }
+        }
+
+        // Prescription Upload
+        if (document.getElementById('upload-prescription')) {
+            document.getElementById('upload-prescription').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData();
+                formData.append('appointment_id', document.getElementById('appointment-id').value);
+                formData.append('medicines', document.getElementById('medicines').value);
+                formData.append('instructions', document.getElementById('instructions').value);
+                
+                const fileInput = document.getElementById('prescription-file');
+                if (fileInput.files.length > 0) {
+                    formData.append('file', fileInput.files[0]);
+                }
+                
+                fetch('/upload_prescription', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Prescription submitted successfully!');
+                        window.location.href = '/';
+                    } else {
+                        alert('Error submitting prescription: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting prescription');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
